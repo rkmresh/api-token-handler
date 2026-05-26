@@ -1,0 +1,22 @@
+# Ignore Maven build files
+target/
+*.class
+
+# Ignore IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Ignore Eclipse files
+.project
+.classpath
+.settings/
+
+# Ignore log files
+*.log
+
+# Ignore generated files
+*.jar
