@@ -8,8 +8,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class TokenHandlerService {
     private static final Logger logger = LoggerFactory.getLogger(TokenHandlerService.class);
     private static final HttpClient httpClient = HttpClients.createDefault();
-    private static final Gson gson = new Gson();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Retrieves an API token from the specified endpoint.
@@ -72,17 +72,17 @@ public class TokenHandlerService {
      */
     private String extractTokenFromResponse(String responseBody) {
         try {
-            JsonObject jsonResponse = gson.fromJson(responseBody, JsonObject.class);
+            JsonNode jsonResponse = objectMapper.readTree(responseBody);
 
             // Try common token field names
             if (jsonResponse.has("token")) {
-                return jsonResponse.get("token").getAsString();
+                return jsonResponse.get("token").asText();
             } else if (jsonResponse.has("access_token")) {
-                return jsonResponse.get("access_token").getAsString();
+                return jsonResponse.get("access_token").asText();
             } else if (jsonResponse.has("apiToken")) {
-                return jsonResponse.get("apiToken").getAsString();
+                return jsonResponse.get("apiToken").asText();
             } else {
-                logger.warn("No token field found in response. Available fields: {}", jsonResponse.keySet());
+                logger.warn("No token field found in response. Available fields: {}", jsonResponse.fieldNames());
                 throw new IllegalArgumentException("No token field found in API response");
             }
         } catch (Exception e) {
