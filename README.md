@@ -46,7 +46,7 @@ api-token-handler/
 
 - **Apache HTTP Client 4.5.14** - For making HTTP requests
 - **SLF4J 1.7.36** - For logging
-- **Gson 2.8.9** - For JSON processing
+- **Jackson Databind** - For JSON processing
 - **JUnit 4.13.2** - For unit testing
 
 ## Usage Example
